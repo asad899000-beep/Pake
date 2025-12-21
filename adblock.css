@@ -1,12 +1,17 @@
 /* Optimized Ad-Hiding CSS */
-[class*="ads-"], [id*="ads-"], 
-[class*="ad-container"], [id*="ad-container"],
-iframe[id*="google_ads"], ins.adsbygoogle,
-.sponsored-content, .promoted-link,
-#ad-slot, .ad-overlay {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    height: 0px !important;
+[class*="ads-"],
+[id*="ads-"],
+[class*="ad-container"],
+[id*="ad-container"],
+iframe[id*="google_ads"],
+ins.adsbygoogle,
+.sponsored-content,
+.promoted-link,
+#ad-slot,
+.ad-overlay {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0px !important;
 }
