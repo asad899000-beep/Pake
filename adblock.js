@@ -1,50 +1,17 @@
-v(
-  // Universal Ad-Blocker for Pake Desktop Apps
-  function () {
-    const adPatterns = [
-      'iframe[src*="doubleclick.net"]',
-      'iframe[src*="googleads"]',
-      'iframe[src*="adsystem"]',
-      'div[class*="ad-box"]',
-      'div[class*="sponsored"]',
-      'div[id*="google_ads"]',
-      'a[href*="clktra.com"]', // Common click tracker
-      ".taboola-ads",
-      ".outbrain-ads",
-      ".ad-container",
-    ];
+// Universal Ad-Blocker Logic
+(function() {
+    const cleanPage = () => {
+        // 1. Auto-skip video ads
+        const skipButtons = document.querySelectorAll('.ytp-ad-skip-button, .ytp-ad-skip-button-modern, [class*="skip-button"]');
+        skipButtons.forEach(btn => btn.click());
 
-    const removeAds = () => {
-      // 1. Remove Elements by Selectors
-      adPatterns.forEach((selector) => {
-        document.querySelectorAll(selector).forEach((el) => el.remove());
-      });
-
-      // 2. Prevent "Click-to-Ad" popups
-      document.querySelectorAll("a").forEach((link) => {
-        if (
-          link.href.includes("utm_source=ad") ||
-          link.onclick?.toString().includes("window.open")
-        ) {
-          link.onclick = (e) => {
-            e.preventDefault();
-            return false;
-          };
-        }
-      });
-
-      // 3. Skip Video Ads (Universal pattern)
-      const skipBtn = document.querySelector(
-        '[class*="skip-button"], [class*="ad-skip"]',
-      );
-      if (skipBtn) skipBtn.click();
+        // 2. Kill invisible "click-hijack" overlays
+        document.querySelectorAll('div').forEach(div => {
+            const z = window.getComputedStyle(div).zIndex;
+            if (parseInt(z) > 1000) div.remove();
+        });
     };
 
-    // Run immediately
-    removeAds();
-
-    // Watch for new ads loading dynamically
-    const observer = new MutationObserver(removeAds);
-    observer.observe(document.body, { childList: true, subtree: true });
-  },
-)();
+    // Run every 800ms to catch ads that load late
+    setInterval(cleanPage, 800);
+})();
